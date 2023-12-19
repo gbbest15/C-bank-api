@@ -1,6 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace CashCraftApp.Model
 {
+    [Table("Account")]
     public class Account
     {
         Random rnd = new Random();
@@ -10,8 +14,10 @@ namespace CashCraftApp.Model
         {
             double result = rnd.NextDouble() * 9_000_000_000L * 1_000_000_000L;
             AccountNumber = result.ToString();
+            AccountName = $"{FirstName} {Lastname}";
         }
 
+        [Key]
         public int Id { get; set; }
         public required string FirstName { get; set; }
         public required string Lastname { get; set; }
