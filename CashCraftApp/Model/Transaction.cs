@@ -14,13 +14,13 @@ namespace CashCraftApp.Model
 
         [Key]
         public int Id { get; set; }
-        public string TransactionUniqueReference { get; set; }
-        public decimal TransactionAmount { get; set; }
+        public required string TransactionUniqueReference { get; set; }
+        public required decimal TransactionAmount { get; set; }
         public TranStatus TransactionStatus { get; set; }
         public bool IsSuccessful => TransactionStatus.Equals(TranStatus.Success);
-        public string TransactionSourceAccount { get; set; }
-        public string TransactionDestinationAccount { get; set; }
-        public string TransactionParticulars { get; set; }
+        public required string TransactionSourceAccount { get; set; }
+        public required string TransactionDestinationAccount { get; set; }
+        public required string TransactionParticulars { get; set; }
         public TranType TransactionType { get; set; }
         public DateTime TransactionDate { get; set; }
     }
