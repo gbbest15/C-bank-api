@@ -1,11 +1,13 @@
 ﻿using CashCraftApp.DAL;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddDbContext<CDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NetCoreOpenBankngConnection")));
+var connectionString = builder.Configuration.GetConnectionString("NetCoreOpenBankngConnection");
+
+if (connectionString != null)
+// Add services to the container .
+builder.Services.AddDbContext<CDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 
