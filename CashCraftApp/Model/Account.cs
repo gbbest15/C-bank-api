@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CashCraftApp.Model
 {
@@ -24,6 +25,7 @@ namespace CashCraftApp.Model
         public required string AccountName { get; set; }
         public required string PhoneNumber { get; set; }
         public required string Email { get; set; }
+        [Precision(18, 2)]
         public required decimal CurrentAccountBalance { get; set; }
         public AccountType AccountType {get; set;}
         public required string AccountNumber { get; set; }

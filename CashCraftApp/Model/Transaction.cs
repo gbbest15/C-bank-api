@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CashCraftApp.Model
 {
@@ -15,6 +16,7 @@ namespace CashCraftApp.Model
         [Key]
         public int Id { get; set; }
         public required string TransactionUniqueReference { get; set; }
+        [Precision(18, 2)]
         public required decimal TransactionAmount { get; set; }
         public TranStatus TransactionStatus { get; set; }
         public bool IsSuccessful => TransactionStatus.Equals(TranStatus.Success);

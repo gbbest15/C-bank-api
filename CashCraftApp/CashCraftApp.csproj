@@ -17,14 +17,25 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.25">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.25" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Model\" />
     <None Remove="DAL\" />
+    <None Remove="Services\" />
+    <None Remove="Services\interface\" />
+    <None Remove="Services\implementations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
     <Folder Include="DAL\" />
+    <Folder Include="Services\" />
+    <Folder Include="Services\interface\" />
+    <Folder Include="Services\implementations\" />
   </ItemGroup>
 </Project>
