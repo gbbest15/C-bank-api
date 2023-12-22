@@ -18,7 +18,20 @@ namespace CashCraftApp.Services.implementations
 
         public Account Authenticate(string AccountNumber, string Pin)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(AccountNumber) || string.IsNullOrEmpty(Pin))
+                throw new ArgumentNullException("Pin or AccountNumber cannot be empty");
+            var account = _db.Accounts.SingleOrDefault(x => x.AccountNumber == AccountNumber);
+            //is account null
+            if (account == null)
+                throw new ArgumentNullException("Account not available");
+
+            //so user exists,
+
+            if (!VerifyPinHash(Pin, account.PinHash!, account.PinSalt!))
+                throw new ArgumentNullException("Wrong Pin inputed");
+
+            //auth successful
+            return account;
         }
 
         public Account Create(Account account, string Pin, string ConfirmPin)
@@ -89,10 +102,10 @@ namespace CashCraftApp.Services.implementations
 
         public void Update(Account account, string? Pin)
         {
-            throw new NotImplementedException();
+            //TODO: i will do this later
         }
 
-
+        
         private static void createHashingPassword(string pin, out byte[] pinHash, out byte[] pinSalt)
         {
             if (string.IsNullOrEmpty(pin)) throw new ArgumentNullException("Pin is null or Empty");
@@ -100,6 +113,15 @@ namespace CashCraftApp.Services.implementations
             {
                 pinSalt = hmac.Key;
                 pinHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(pin));
+            }
+        }
+
+        private static bool VerifyPinHash(string Pin, byte[] pinHash, byte[] pinSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(pinSalt))
+            {
+                var computedPinHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Pin));
+                return computedPinHash.SequenceEqual(pinHash);
             }
         }
 
