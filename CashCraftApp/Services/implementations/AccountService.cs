@@ -103,9 +103,42 @@ namespace CashCraftApp.Services.implementations
         public void Update(Account account, string? Pin)
         {
             //TODO: i will do this later
+
+            // fnd userr
+            var accountToBeUpdated = _db.Accounts.Find(account.Id);
+            if (accountToBeUpdated == null) throw new ApplicationException("Account not found");
+            //so we have a match
+            if (!string.IsNullOrWhiteSpace(account.Email) && account.Email != accountToBeUpdated.Email)
+            {
+                //throw error because email passeed doesn't matc wiith
+                if (_db.Accounts.Any(x => x.Email == account.Email)) throw new ApplicationException("Email " + account.Email + " has been taken");
+                accountToBeUpdated.Email = account.Email;
+            }
+
+            if (!string.IsNullOrWhiteSpace(account.PhoneNumber) && account.Email != accountToBeUpdated.PhoneNumber)
+            {
+                //throw error because email passeed doesn't matc wiith
+                if (_db.Accounts.Any(x => x.PhoneNumber == account.PhoneNumber)) throw new ApplicationException("PhoneNumber " + account.PhoneNumber + " has been taken");
+                accountToBeUpdated.PhoneNumber = account.PhoneNumber;
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(Pin))
+            {
+                byte[] pinHash, pinSalt;
+                createHashingPassword(Pin, out pinHash, out pinSalt);
+
+                accountToBeUpdated.PinHash = pinHash;
+                accountToBeUpdated.PinSalt = pinSalt;
+
+            }
+
+            _db.Accounts.Update(accountToBeUpdated);
+            _db.SaveChanges();
+
         }
 
-        
+
         private static void createHashingPassword(string pin, out byte[] pinHash, out byte[] pinSalt)
         {
             if (string.IsNullOrEmpty(pin)) throw new ArgumentNullException("Pin is null or Empty");
