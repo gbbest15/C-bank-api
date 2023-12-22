@@ -42,22 +42,49 @@ namespace CashCraftApp.Services.implementations
 
         public void Delete(int Id)
         {
-            throw new NotImplementedException();
+            var account = _db.Accounts.Find(Id);
+
+            if (account != null)
+            {
+                _db.Accounts.Remove(account);
+                _db.SaveChanges();
+            }
+
         }
 
         public IEnumerable<Account> GetAllAccounts()
         {
-            throw new NotImplementedException();
+            return _db.Accounts.ToList();
+           
         }
 
         public Account GetByAccountNumber(string AccountNumber)
         {
-            throw new NotImplementedException();
+           if (!string.IsNullOrWhiteSpace(AccountNumber))
+            {
+                var account = _db.Accounts.Where(x => x.AccountNumber == AccountNumber).SingleOrDefault();
+                if (account != null)
+                {
+                    return account;
+                }
+                else
+                {
+                    throw new ApplicationException("Account not available base on Account Number");
+                }
+            }
+            else
+            {
+                throw new ApplicationException("Please enter your Account Number");
+            }
         }
 
         public Account GetById(int Id)
         {
-            throw new NotImplementedException();
+            var account = _db.Accounts.Where(x => x.Id == Id).FirstOrDefault();
+            if (account !=null)
+            return account;
+
+            throw new ArgumentNullException("there is account with this Id");
         }
 
         public void Update(Account account, string? Pin)
@@ -75,7 +102,6 @@ namespace CashCraftApp.Services.implementations
                 pinHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(pin));
             }
         }
-
 
     }
 }
